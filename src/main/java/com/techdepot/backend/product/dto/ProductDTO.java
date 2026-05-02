@@ -1,5 +1,60 @@
 package com.techdepot.backend.product.dto;
 
+import com.techdepot.backend.product.model.Product;
+
 public class ProductDTO {
     
+    private long id;
+    private String nameProduct;
+    private String description;
+    private int amount;
+    private double price;
+    private String category;
+    
+    public ProductDTO(Product product){
+        this.id = product.getId();
+        this.nameProduct = product.getNameProduct();
+        this.description = product.getDescription();
+        this.amount = product.getAmount();
+        this.price = product.getPrice();
+        this.category = product.getCategory();
+    }
+    
+    public ProductDTO(long id, String nameProduct, String description, int amount,double price, String category){
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.description = description;
+        this.amount = amount;
+        this.price = price;
+        this.category = category;
+    }
+    
+    //Getters
+    public long getId() {return id;}
+    public String getNameProduct() {return nameProduct;}
+    public String getDescription() {return description;}
+    public int getAmount() {return amount;}
+    public double getPrice() {return price;}
+    public String getCategory() {return category;}
+    
+    //Setters
+    public void setNameProduct(String nameProduct) {
+        this.nameProduct = nameProduct;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

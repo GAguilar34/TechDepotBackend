@@ -1,5 +1,96 @@
 package com.techdepot.backend.product.service;
 
+import com.techdepot.backend.product.model.Product;
+import com.techdepot.backend.product.repository.ProductRepository;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+@Service //Le dice a Spring boot que es parte de la logica de negocio
 public class ProductService {
+
+    ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    //Validar producto
+    public void createProduct(Product product) {
+        try {
+            if (product.getId() == null || product.getNameProduct() == null || product.getDescription() == null
+                    || product.getAmount() == 0 || product.getCategory() == null || product.getPrice() == 0.0) {
+                throw new RuntimeException("Por favor llene todos los campos.");
+            }
+
+            if (product.getDescription().length() < 100) {
+                throw new RuntimeException("La descripcion es demasiado corta.");
+            }
+
+            if (product.getNameProduct().length() < 4) {
+                throw new RuntimeException("El nombre del producto es demasiado corto.");
+            }
+            productRepository.save(product);
+            
+        } catch (Exception e) {
+            throw new RuntimeException("No se pudo agregar el producto.");
+        }
+    }
+
+    //Validar datos al actualizar un producto
+    public void updateProduct(Long id, Product newData) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isEmpty()) {
+            throw new RuntimeException("No se pudo encontrar el producto.");
+        } else {
+            Product p = new Product();
+
+            if (p.getNameProduct() != null) {
+
+                if (p.getNameProduct().length() < 4) {
+                    throw new RuntimeException("El nombre del producto es demasiado corto.");
+                }
+                p.setNameProduct(newData.getNameProduct());
+            }
+
+            if (p.getDescription() != null) {
+                if (p.getDescription().length() < 100) {
+                    throw new RuntimeException("La descripcion es demasiado corta.");
+                }
+                p.setDescription(newData.getDescription());
+            }
+
+            if (p.getAmount() != 0) {
+                p.setAmount(newData.getAmount());
+            }
+
+            if (p.getCategory() != null) {
+                p.setCategory(newData.getCategory());
+            }
+
+            if (p.getPrice() != 0.0) {
+                p.setPrice(newData.getPrice());
+            }
+            productRepository.save(newData);
+        }
+    }
+
+    //Validar producto al eliminarlo
+    public void deleteProduct(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isEmpty()){
+          throw new RuntimeException("No se pudo encontrar el producto."); 
+        }
+        else{
+            Product p = product.get();
+            
+            productRepository.delete(p);
+        }
+    }
     
+    //Obtener productos ordenados por su id
+    public List<Product> getAllProduct(){
+        return productRepository.findAll(Sort.by("id"));
+    }
 }

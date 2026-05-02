@@ -1,5 +1,8 @@
 package com.techdepot.backend.product.repository;
 
-public class ProductRepository {
+import com.techdepot.backend.product.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
     
 }
