@@ -27,9 +27,11 @@ public class OrderService {
     CustomerRepository customerRepository;
     CartRepository cartRepository;
 
-    public OrderService(OrderRepository orderRepository, ProductRepository productRepository, CartRepository cartRepository) {
+    public OrderService(OrderRepository orderRepository, ProductRepository productRepository, 
+            CustomerRepository customerRepository, CartRepository cartRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
+        this.customerRepository = customerRepository;
         this.cartRepository = cartRepository;
     }
 
@@ -88,7 +90,7 @@ public class OrderService {
         if (carts.isEmpty()) {
             throw new RuntimeException("No se encontro el carrito.");
         }
-        Cart c = new Cart();
+        Cart c = carts.get();
         if (c.getItem() == null || c.getItem().isEmpty()) {
             throw new RuntimeException("El carrito no tiene productos.");
         }

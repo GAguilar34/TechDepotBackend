@@ -3,6 +3,7 @@ package com.techdepot.backend.customer.controller;
 import com.techdepot.backend.customer.model.Customer;
 import com.techdepot.backend.customer.service.CustomerService;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -31,9 +32,19 @@ public class CustomerController {
     public void delete(@PathVariable Long id) {
         service.deleteCustomer(id);
     }
-    
+
     @GetMapping//Obtiene toda la lista 
-    public List<Customer> getAll(){
+    public List<Customer> getAll() {
         return service.getAllCustomers();
+    }
+
+    @PostMapping("/login") //Define el metodo que responde a la peticion HTTP
+    public ResponseEntity<?> login(@RequestBody Customer customer) {
+        try {
+            Customer c = service.login(customer.getEmail(), customer.getPassword());
+            return ResponseEntity.ok(c);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

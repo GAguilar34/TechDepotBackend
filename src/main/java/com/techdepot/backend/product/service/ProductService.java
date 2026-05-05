@@ -19,8 +19,9 @@ public class ProductService {
     //Validar producto
     public void createProduct(Product product) {
         try {
-            if (product.getId() == null || product.getNameProduct() == null || product.getDescription() == null
-                    || product.getAmount() == 0 || product.getCategory() == null || product.getPrice() == 0.0) {
+            if (product.getNameProduct() == null || product.getDescription() == null
+                    || product.getAmount() == 0 || product.getCategory() == null
+                    || product.getPrice() == 0.0 || product.getImageUrl() == null) {
                 throw new RuntimeException("Por favor llene todos los campos.");
             }
 
@@ -32,7 +33,7 @@ public class ProductService {
                 throw new RuntimeException("El nombre del producto es demasiado corto.");
             }
             productRepository.save(product);
-            
+
         } catch (Exception e) {
             throw new RuntimeException("No se pudo agregar el producto.");
         }
@@ -44,7 +45,7 @@ public class ProductService {
         if (product.isEmpty()) {
             throw new RuntimeException("No se pudo encontrar el producto.");
         } else {
-            Product p = new Product();
+            Product p = product.get();
 
             if (p.getNameProduct() != null) {
 
@@ -79,18 +80,17 @@ public class ProductService {
     //Validar producto al eliminarlo
     public void deleteProduct(Long id) {
         Optional<Product> product = productRepository.findById(id);
-        if(product.isEmpty()){
-          throw new RuntimeException("No se pudo encontrar el producto."); 
-        }
-        else{
+        if (product.isEmpty()) {
+            throw new RuntimeException("No se pudo encontrar el producto.");
+        } else {
             Product p = product.get();
-            
+
             productRepository.delete(p);
         }
     }
-    
+
     //Obtener productos ordenados por su id
-    public List<Product> getAllProduct(){
+    public List<Product> getAllProduct() {
         return productRepository.findAll(Sort.by("id"));
     }
 }
