@@ -54,10 +54,10 @@ public class CustomerService {
     }
 
     //Validaciones al crear un cliente
-    public void createCustomer(Customer customer) {
+    public Customer createCustomer(Customer customer) {
 
         try {
-            if (customer.getId() == null || customer.getAge() == 0 || customer.getName() == null || customer.getEmail() == null
+            if (customer.getAge() == 0 || customer.getName() == null || customer.getEmail() == null
                     || customer.getGender() == null || customer.getPhone() == null || customer.getPassword() == null) {
                 throw new RuntimeException("Ningun campo puede estar vacio.");
             }
@@ -92,7 +92,7 @@ public class CustomerService {
                 throw new RuntimeException("El correo ya esta registrado.");
             }
 
-            customerRepository.save(customer);
+            return customerRepository.save(customer);
 
         } catch (Exception e) {
             throw new RuntimeException("No se pudo registrar el cliente" + e.getMessage());

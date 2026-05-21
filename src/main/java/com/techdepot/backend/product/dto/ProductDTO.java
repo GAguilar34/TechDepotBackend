@@ -10,6 +10,7 @@ public class ProductDTO {
     private int amount;
     private double price;
     private String category;
+    private String imageUrl;
     
     public ProductDTO(Product product){
         this.id = product.getId();
@@ -18,15 +19,17 @@ public class ProductDTO {
         this.amount = product.getAmount();
         this.price = product.getPrice();
         this.category = product.getCategory();
+        this.imageUrl = product.getImageUrl();
     }
     
-    public ProductDTO(long id, String nameProduct, String description, int amount,double price, String category){
+    public ProductDTO(long id, String nameProduct, String description, int amount,double price, String category, String imageUrl){
         this.id = id;
         this.nameProduct = nameProduct;
         this.description = description;
         this.amount = amount;
         this.price = price;
         this.category = category;
+        this.imageUrl = imageUrl;
     }
     
     //Getters
@@ -36,6 +39,7 @@ public class ProductDTO {
     public int getAmount() {return amount;}
     public double getPrice() {return price;}
     public String getCategory() {return category;}
+    public String getImageUrl() {return imageUrl;}
     
     //Setters
     public void setNameProduct(String nameProduct) {
@@ -56,5 +60,9 @@ public class ProductDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

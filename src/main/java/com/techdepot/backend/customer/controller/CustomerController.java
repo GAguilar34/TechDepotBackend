@@ -19,8 +19,13 @@ public class CustomerController {
     }
 
     @PostMapping //Define el metodo que responde a la peticion HTTP
-    public void create(@RequestBody Customer customer) { //RequestBody convierte los datos de formato JSON a objeto
-        service.createCustomer(customer);
+    public ResponseEntity<?> create(@RequestBody Customer customer) { //RequestBody convierte los datos de formato JSON a objeto
+        try {
+            Customer createdCustomer = service.createCustomer(customer);
+            return ResponseEntity.ok(createdCustomer);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PatchMapping("/{id}") //Define que este metodo define a una peticion patch es decir actualizar

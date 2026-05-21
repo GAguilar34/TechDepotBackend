@@ -47,33 +47,38 @@ public class ProductService {
         } else {
             Product p = product.get();
 
-            if (p.getNameProduct() != null) {
+            if (newData.getNameProduct() != null) {
 
-                if (p.getNameProduct().length() < 4) {
+                if (newData.getNameProduct().length() < 4) {
                     throw new RuntimeException("El nombre del producto es demasiado corto.");
                 }
                 p.setNameProduct(newData.getNameProduct());
             }
 
-            if (p.getDescription() != null) {
-                if (p.getDescription().length() < 100) {
+            if (newData.getDescription() != null) {
+                if (newData.getDescription().length() < 100) {
                     throw new RuntimeException("La descripcion es demasiado corta.");
                 }
                 p.setDescription(newData.getDescription());
             }
 
-            if (p.getAmount() != 0) {
+            if (newData.getAmount() != 0) {
                 p.setAmount(newData.getAmount());
             }
 
-            if (p.getCategory() != null) {
+            if (newData.getCategory() != null) {
                 p.setCategory(newData.getCategory());
             }
 
-            if (p.getPrice() != 0.0) {
+            if (newData.getPrice() != 0.0) {
                 p.setPrice(newData.getPrice());
             }
-            productRepository.save(newData);
+
+            if (newData.getImageUrl() != null) {
+                p.setImageUrl(newData.getImageUrl());
+            }
+
+            productRepository.save(p);
         }
     }
 
