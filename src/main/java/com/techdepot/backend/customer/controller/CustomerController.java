@@ -43,6 +43,20 @@ public class CustomerController {
         return service.getAllCustomers();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        try {
+            Customer customer = service.getCustomerById(id);
+            return ResponseEntity.ok(
+                    customer
+            );
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
     @PostMapping("/login") //Define el metodo que responde a la peticion HTTP
     public ResponseEntity<?> login(@RequestBody Customer customer) {
         try {

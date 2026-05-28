@@ -154,7 +154,7 @@ public class CustomerService {
             if (newData.getAccountNumber() != null) {
                 c.setAccountNumber(newData.getAccountNumber());
             }
-            
+
             customerRepository.save(c);
         }
     }
@@ -191,5 +191,15 @@ public class CustomerService {
         }
 
         return c;
+    }
+
+    public Customer getCustomerById(Long id) {
+        return customerRepository
+                .findById(id)
+                .orElseThrow(()
+                        -> new RuntimeException(
+                        "Cliente no encontrado."
+            )
+        );
     }
 }
