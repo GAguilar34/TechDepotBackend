@@ -20,8 +20,8 @@ public class ProductService {
     public void createProduct(Product product) {
         try {
             if (product.getNameProduct() == null || product.getDescription() == null
-                    || product.getAmount() == 0 || product.getCategory() == null
-                    || product.getPrice() == 0.0 || product.getImageUrl() == null) {
+                    || product.getAmount() == 0 || product.getCategory() == null 
+                    || product.getState() == null || product.getPrice() == 0.0 || product.getImageUrl() == null) {
                 throw new RuntimeException("Por favor llene todos los campos.");
             }
 
@@ -68,6 +68,10 @@ public class ProductService {
 
             if (newData.getCategory() != null) {
                 p.setCategory(newData.getCategory());
+            }
+            
+            if (newData.getState() != null){
+                p.setState(newData.getState());
             }
 
             if (newData.getPrice() != 0.0) {

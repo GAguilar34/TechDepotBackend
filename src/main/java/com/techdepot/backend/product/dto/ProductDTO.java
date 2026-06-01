@@ -9,6 +9,7 @@ public class ProductDTO {
     private String description;
     private int amount;
     private double price;
+    private String state;
     private String category;
     private String imageUrl;
     
@@ -18,16 +19,18 @@ public class ProductDTO {
         this.description = product.getDescription();
         this.amount = product.getAmount();
         this.price = product.getPrice();
+        this.state = product.getState();
         this.category = product.getCategory();
         this.imageUrl = product.getImageUrl();
     }
     
-    public ProductDTO(long id, String nameProduct, String description, int amount,double price, String category, String imageUrl){
+    public ProductDTO(long id, String nameProduct, String description, int amount,double price, String state, String category, String imageUrl){
         this.id = id;
         this.nameProduct = nameProduct;
         this.description = description;
         this.amount = amount;
         this.price = price;
+        this.state = state;
         this.category = category;
         this.imageUrl = imageUrl;
     }
@@ -38,6 +41,7 @@ public class ProductDTO {
     public String getDescription() {return description;}
     public int getAmount() {return amount;}
     public double getPrice() {return price;}
+    public String getState() {return state;}
     public String getCategory() {return category;}
     public String getImageUrl() {return imageUrl;}
     
@@ -56,6 +60,10 @@ public class ProductDTO {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+    
+    public void setState(String state){
+        this.state = state;
     }
 
     public void setCategory(String category) {
