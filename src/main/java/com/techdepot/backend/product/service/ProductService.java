@@ -10,10 +10,19 @@ import org.springframework.stereotype.Service;
 @Service //Le dice a Spring boot que es parte de la logica de negocio
 public class ProductService {
 
+    private static final int MAX_PRODUCT_IMAGES = 20;
+
     ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
+    }
+    
+    private boolean hasValidImages(Product product) {
+        return product.getImageUrls() != null
+                && !product.getImageUrls().isEmpty()
+                && product.getImageUrls().size() <= MAX_PRODUCT_IMAGES
+                && product.getImageUrls().stream().allMatch(url -> url != null && !url.isBlank());
     }
 
     //Validar producto
@@ -21,7 +30,7 @@ public class ProductService {
         try {
             if (product.getNameProduct() == null || product.getDescription() == null
                     || product.getAmount() == 0 || product.getCategory() == null 
-                    || product.getState() == null || product.getPrice() == 0.0 || product.getImageUrl() == null) {
+                    || product.getState() == null || product.getPrice() == 0.0 || !hasValidImages(product)) {
                 throw new RuntimeException("Por favor llene todos los campos.");
             }
 
@@ -78,8 +87,11 @@ public class ProductService {
                 p.setPrice(newData.getPrice());
             }
 
-            if (newData.getImageUrl() != null) {
-                p.setImageUrl(newData.getImageUrl());
+            if (newData.getImageUrls() != null) {
+                if (!hasValidImages(newData)) {
+                    throw new RuntimeException("El producto debe tener entre 1 y 20 imagenes validas.");
+                }
+                p.setImageUrls(newData.getImageUrls());
             }
 
             productRepository.save(p);
@@ -101,5 +113,10 @@ public class ProductService {
     //Obtener productos ordenados por su id
     public List<Product> getAllProduct() {
         return productRepository.findAll(Sort.by("id"));
+    }
+
+    public Product getProductById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No se pudo encontrar el producto."));
     }
 }

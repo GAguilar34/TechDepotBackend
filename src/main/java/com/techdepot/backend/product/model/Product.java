@@ -1,6 +1,8 @@
 package com.techdepot.backend.product.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity //Convierte la clase en una tabla
 @Table(name = "product") //Nombre de la tabla en MySQL
@@ -15,9 +17,13 @@ public class Product {
     private double price;
     private String state;
     private String category;
-    private String imageUrl; 
+    
+    @ElementCollection
+    @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "image_url", length = 1000)
+    private List<String> imageUrls = new ArrayList<>();
 
-    public Product(long id, String nameProduct, String description, int amount, double price, String category, String state, String imageUrl) {
+    public Product(long id, String nameProduct, String description, int amount, double price, String category, String state, List<String> imageUrls) {
         this.id = id;
         this.nameProduct = nameProduct;
         this.description = description;
@@ -25,7 +31,7 @@ public class Product {
         this.price = price;
         this.state = state;
         this.category = category;
-        this.imageUrl = imageUrl;
+        this.imageUrls = imageUrls;
     }
     
     public Product(){
@@ -40,7 +46,10 @@ public class Product {
     public double getPrice() {return price;}
     public String getState() {return state;}
     public String getCategory() {return category;}
-    public String getImageUrl() { return imageUrl; }
+    public List<String> getImageUrls() {return imageUrls;}
+    public String getImageUrl() {
+        return imageUrls == null || imageUrls.isEmpty() ? null : imageUrls.get(0);
+    }
     
     //Setters
     public void setNameProduct(String nameProduct) {
@@ -67,7 +76,14 @@ public class Product {
         this.category = category;
     }
     
-    public void setImageUrl(String imageUrl) { 
-        this.imageUrl = imageUrl; 
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+    
+    public void setImageUrl(String imageUrl) {
+        this.imageUrls = new ArrayList<>();
+        if (imageUrl != null && !imageUrl.isBlank()) {
+            this.imageUrls.add(imageUrl);
+        }
     }
 }    
