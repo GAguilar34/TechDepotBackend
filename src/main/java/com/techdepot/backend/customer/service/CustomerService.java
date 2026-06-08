@@ -1,8 +1,11 @@
 package com.techdepot.backend.customer.service;
 
+import com.techdepot.backend.cart.model.Cart;
+import com.techdepot.backend.cart.repository.CartRepository;
 import com.techdepot.backend.customer.model.Customer;
 import com.techdepot.backend.customer.model.UserType;
 import com.techdepot.backend.customer.repository.CustomerRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Sort;
@@ -13,9 +16,11 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
 
     CustomerRepository customerRepository;
+    CartRepository cartRepository;
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, CartRepository cartRepository) {
         this.customerRepository = customerRepository;
+        this.cartRepository = cartRepository;
     }
 
     //Validar password
@@ -92,7 +97,16 @@ public class CustomerService {
                 throw new RuntimeException("El correo ya esta registrado.");
             }
 
-            return customerRepository.save(customer);
+            Customer savedCustomer = customerRepository.save(customer);
+
+            Cart cart = new Cart();
+
+            cart.setCustomer(savedCustomer);
+            cart.setItem(new ArrayList<>());
+
+            cartRepository.save(cart);
+
+            return savedCustomer;
 
         } catch (Exception e) {
             throw new RuntimeException("No se pudo registrar el cliente" + e.getMessage());
@@ -199,7 +213,7 @@ public class CustomerService {
                 .orElseThrow(()
                         -> new RuntimeException(
                         "Cliente no encontrado."
-            )
-        );
+                )
+                );
     }
 }
