@@ -19,6 +19,7 @@ public class PaymentController {
         this.service = service;
     }
     
+    @PostMapping
     public ResponseEntity<?> generatePayment(@RequestBody PaymentRequest paymentRequest){
         try {
             service.generatePayment(

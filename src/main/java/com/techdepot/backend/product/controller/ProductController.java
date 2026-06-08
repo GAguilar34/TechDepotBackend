@@ -4,7 +4,6 @@ import com.techdepot.backend.product.model.Product;
 import com.techdepot.backend.product.service.ProductService;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 
 @RestController //Permite que esta clase maneje peticiones HTTP y devuelva datos en formato JSON
@@ -46,5 +45,10 @@ public class ProductController {
     @GetMapping("/{id}")
     public Product getById(@PathVariable Long id) {
         return service.getProductById(id);
+    }
+
+    @GetMapping("/seller/{sellerId}")
+    public List<Product> getBySeller(@PathVariable Long sellerId) {
+        return service.getProductsBySeller(sellerId);
     }
 }

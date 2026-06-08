@@ -118,15 +118,23 @@ public class OrderService {
             OrderDetail detail = new OrderDetail();
             detail.setProduct(item.getProduct());
             detail.setAmount(item.getAmount());
-            detail.setPrice(item.getPrice());
+            detail.setPrice(item.getProduct().getPrice());
             detail.setOrder(order);
             details.add(detail);
 
-            total += item.getSubTotal();
+            total += item.getAmount() * item.getProduct().getPrice();
         }
 
         order.setTotal(total);
         order.setOrderDetail(details);
         orderRepository.save(order);
+    }
+
+    public List<Order> getOrdersByCustomer(Long customerId) {
+        return orderRepository.findByCustomerId(customerId);
+    }
+
+    public List<Order> getSalesBySeller(Long sellerId) {
+        return orderRepository.findOrdersBySellerId(sellerId);
     }
 }

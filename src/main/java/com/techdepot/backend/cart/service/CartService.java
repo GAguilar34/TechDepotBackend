@@ -4,6 +4,7 @@ import com.techdepot.backend.cart.model.Cart;
 import com.techdepot.backend.cart.model.CartItem;
 import com.techdepot.backend.cart.repository.CartRepository;
 import com.techdepot.backend.product.model.Product;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class CartService {
         }
         else{
             Cart c = cart.get();
+            if (c.getItem() == null) {
+                c.setItem(new ArrayList<>());
+            }
             for(CartItem items: c.getItem()){
                 if(items.getProduct().getId().equals(product.getId())){
                     if(amount > 0){
@@ -49,8 +53,10 @@ public class CartService {
         }
         else{
             Cart c = cart.get();
-            c.getItem().removeIf(item -> item.getProduct().getId().equals(product.getId()));
-            cartRepository.save(c);
+            if (c.getItem() != null) {
+                c.getItem().removeIf(item -> item.getProduct().getId().equals(product.getId()));
+                cartRepository.save(c);
+            }
         }
     }
     
@@ -61,7 +67,7 @@ public class CartService {
         }
         else{
         Cart c = cart.get();
-        return c.getItem();
+        return c.getItem() != null ? c.getItem() : new ArrayList<>();
         }
     }
     
@@ -72,8 +78,10 @@ public class CartService {
         }
         else{
             Cart c = cart.get();
-            c.getItem().clear();
-            cartRepository.save(c);
+            if (c.getItem() != null) {
+                c.getItem().clear();
+                cartRepository.save(c);
+            }
         }
     }
     

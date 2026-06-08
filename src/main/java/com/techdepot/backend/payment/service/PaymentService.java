@@ -53,8 +53,8 @@ public class PaymentService {
             throw new RuntimeException("El nombre del propietario es requerido.");
         }
 
-        if (amount > 0) {
-            throw new RuntimeException("La tarjeta no puede tener saldo negativo.");
+        if (amount <= 0) {
+            throw new RuntimeException("El monto debe ser mayor a 0.");
         }
 
         if (lastFourDigits == null || lastFourDigits.length() != 4) {

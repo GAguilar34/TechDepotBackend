@@ -39,8 +39,10 @@ public class Cart {
     public double getTotal(){
         total = 0;
         
-        for(CartItem item: cartItem){
-            total += item.getSubTotal();
+        if (cartItem != null) {
+            for(CartItem item: cartItem){
+                total += item.getSubTotal();
+            }
         }
         return total;
     }

@@ -1,5 +1,7 @@
 package com.techdepot.backend.product.service;
 
+import com.techdepot.backend.customer.model.Customer;
+import com.techdepot.backend.customer.repository.CustomerRepository;
 import com.techdepot.backend.product.model.Product;
 import com.techdepot.backend.product.repository.ProductRepository;
 import java.util.List;
@@ -13,9 +15,11 @@ public class ProductService {
     private static final int MAX_PRODUCT_IMAGES = 20;
 
     ProductRepository productRepository;
+    CustomerRepository customerRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, CustomerRepository customerRepository) {
         this.productRepository = productRepository;
+        this.customerRepository = customerRepository;
     }
     
     private boolean hasValidImages(Product product) {
@@ -41,6 +45,13 @@ public class ProductService {
             if (product.getNameProduct().length() < 4) {
                 throw new RuntimeException("El nombre del producto es demasiado corto.");
             }
+
+            if (product.getSeller() != null && product.getSeller().getId() != null) {
+                Customer seller = customerRepository.findById(product.getSeller().getId())
+                        .orElseThrow(() -> new RuntimeException("El vendedor no existe."));
+                product.setSeller(seller);
+            }
+
             productRepository.save(product);
 
         } catch (Exception e) {
@@ -118,5 +129,9 @@ public class ProductService {
     public Product getProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No se pudo encontrar el producto."));
+    }
+
+    public List<Product> getProductsBySeller(Long sellerId) {
+        return productRepository.findBySellerId(sellerId);
     }
 }

@@ -1,5 +1,6 @@
 package com.techdepot.backend.product.model;
 
+import com.techdepot.backend.customer.model.Customer;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +19,16 @@ public class Product {
     private String state;
     private String category;
     
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private Customer seller;
+
     @ElementCollection
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "image_url", length = 1000)
     private List<String> imageUrls = new ArrayList<>();
 
-    public Product(long id, String nameProduct, String description, int amount, double price, String category, String state, List<String> imageUrls) {
+    public Product(long id, String nameProduct, String description, int amount, double price, String category, String state, Customer seller, List<String> imageUrls) {
         this.id = id;
         this.nameProduct = nameProduct;
         this.description = description;
@@ -31,6 +36,7 @@ public class Product {
         this.price = price;
         this.state = state;
         this.category = category;
+        this.seller = seller;
         this.imageUrls = imageUrls;
     }
     
@@ -46,6 +52,7 @@ public class Product {
     public double getPrice() {return price;}
     public String getState() {return state;}
     public String getCategory() {return category;}
+    public Customer getSeller() {return seller;}
     public List<String> getImageUrls() {return imageUrls;}
     public String getImageUrl() {
         return imageUrls == null || imageUrls.isEmpty() ? null : imageUrls.get(0);
@@ -76,6 +83,10 @@ public class Product {
         this.category = category;
     }
     
+    public void setSeller(Customer seller) {
+        this.seller = seller;
+    }
+
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
     }
