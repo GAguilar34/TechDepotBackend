@@ -76,4 +76,12 @@ public class CartService {
             cartRepository.save(c);
         }
     }
+    
+    public Cart getCartByCustomer(Long customerId) {
+
+    return cartRepository
+            .findByCustomerId(customerId)
+            .orElseThrow(() ->
+                    new RuntimeException("No se encontró carrito"));
+}
 }
