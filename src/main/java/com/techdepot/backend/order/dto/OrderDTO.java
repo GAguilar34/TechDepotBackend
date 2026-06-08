@@ -44,7 +44,7 @@ public class OrderDTO {
         this.phone = order.getPhone();
         this.receiverName = order.getReceiverName();
         this.payment = order.getPayment();
-        this.orderDetail = order.getOrderDeatil();
+        this.orderDetail = order.getOrderDetail();
     }
     
     //Getters

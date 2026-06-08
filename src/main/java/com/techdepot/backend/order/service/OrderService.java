@@ -9,6 +9,7 @@ import com.techdepot.backend.order.dto.OrderItemRequest;
 import com.techdepot.backend.order.dto.OrderRequest;
 import com.techdepot.backend.order.model.Order;
 import com.techdepot.backend.order.model.OrderDetail;
+import com.techdepot.backend.order.model.Status;
 import com.techdepot.backend.order.repository.OrderRepository;
 import com.techdepot.backend.product.model.Product;
 import com.techdepot.backend.product.repository.ProductRepository;
@@ -77,6 +78,7 @@ public class OrderService {
                 total += item.getAmount() * p.getPrice();
             
         }
+        order.setStatus(Status.PENDIENTE);
         order.setTotal(total);
         order.setOrderDetail(details);
         orderRepository.save(order);
@@ -125,9 +127,13 @@ public class OrderService {
             total += item.getAmount() * item.getProduct().getPrice();
         }
 
+        order.setStatus(Status.PENDIENTE);
         order.setTotal(total);
         order.setOrderDetail(details);
         orderRepository.save(order);
+
+        c.getItem().clear();
+        cartRepository.save(c);
     }
 
     public List<Order> getOrdersByCustomer(Long customerId) {

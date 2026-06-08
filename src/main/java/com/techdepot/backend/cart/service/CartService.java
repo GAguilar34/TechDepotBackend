@@ -3,6 +3,8 @@ package com.techdepot.backend.cart.service;
 import com.techdepot.backend.cart.model.Cart;
 import com.techdepot.backend.cart.model.CartItem;
 import com.techdepot.backend.cart.repository.CartRepository;
+import com.techdepot.backend.customer.model.Customer;
+import com.techdepot.backend.customer.repository.CustomerRepository;
 import com.techdepot.backend.product.model.Product;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +14,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CartService {
     CartRepository cartRepository;
+    CustomerRepository customerRepository;
     
-    public CartService(CartRepository cartRepository){
+    public CartService(CartRepository cartRepository, CustomerRepository customerRepository){
         this.cartRepository = cartRepository;
+        this.customerRepository = customerRepository;
     }
     
     public void addProduct(Long cartId, Product product, int amount){
@@ -86,10 +90,15 @@ public class CartService {
     }
     
     public Cart getCartByCustomer(Long customerId) {
-
-    return cartRepository
-            .findByCustomerId(customerId)
-            .orElseThrow(() ->
-                    new RuntimeException("No se encontró carrito"));
-}
+        return cartRepository
+                .findByCustomerId(customerId)
+                .orElseGet(() -> {
+                    Customer customer = customerRepository.findById(customerId)
+                            .orElseThrow(() -> new RuntimeException("No se encontró el cliente."));
+                    Cart newCart = new Cart();
+                    newCart.setCustomer(customer);
+                    newCart.setItem(new ArrayList<>());
+                    return cartRepository.save(newCart);
+                });
+    }
 }

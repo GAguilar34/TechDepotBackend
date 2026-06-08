@@ -26,7 +26,7 @@ public class Order {
     @JoinColumn(name = "payment_id")
     private Payment payment;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) //mappedBy le decimos a jpa que la relacion ya fue definida
-    //cascade = CascadeType.ALL le dice a jpa que si hacemos algo con esta entidad tambien lo haga en orderDetails 
+    //cascade = CascadeType.ALL le dice a jpa que si hacemos algo con esta entidad tambien lo haga en orderDetails
     private List<OrderDetail> orderDetail;
     
     public Order(){
@@ -57,7 +57,7 @@ public class Order {
     public String getPhone(){return phone;}
     public String getReceiverName(){return receiverName;}
     public Payment getPayment(){return payment;}
-    public List<OrderDetail> getOrderDeatil(){return orderDetail;}
+    public List<OrderDetail> getOrderDetail(){return orderDetail;}
     
     //Setters
     public void setCustomer(Customer customer) {

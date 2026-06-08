@@ -16,7 +16,7 @@ public class Cart {
     @OneToOne //Relacion uno a uno 
     @JoinColumn(name = "customer_id") //Crea una columna en la tabla Cart llamada customer_id
     private Customer customer;
-    @OneToMany //Relacion uno a muchos 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //Relacion uno a muchos 
     @JoinColumn(name = "cart_id") //Crea una columna en la tabla CartItem llamada cart_id
     private List<CartItem> cartItem;
     private double total;

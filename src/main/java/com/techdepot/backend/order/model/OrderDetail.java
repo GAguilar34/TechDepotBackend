@@ -1,5 +1,6 @@
 package com.techdepot.backend.order.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techdepot.backend.order.model.Order;
 import com.techdepot.backend.product.model.Product;
 import jakarta.persistence.*;
@@ -16,6 +17,7 @@ public class OrderDetail {
     private Product product;
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
     private int amount;
     private double price;

@@ -1,5 +1,6 @@
 package com.techdepot.backend.payment.service;
 
+import com.techdepot.backend.payment.model.Method;
 import com.techdepot.backend.payment.model.Payment;
 import com.techdepot.backend.payment.model.Status;
 import com.techdepot.backend.payment.repository.PaymentRepository;
@@ -67,6 +68,7 @@ public class PaymentService {
 
         Payment payment = new Payment();
         payment.setTransactionId(UUID.randomUUID().toString());
+        payment.setMethod(Method.TARJETA_CREDITO);
         payment.setStatus(Status.APROBADO);
         payment.setPaidAt(LocalDateTime.now());
         payment.setAmount(amount);
